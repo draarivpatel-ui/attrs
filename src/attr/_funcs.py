@@ -78,7 +78,7 @@ def asdict(
     attrs = fields(inst.__class__)
     rv = dict_factory()
     for a in attrs:
-        v = getattr(inst, a.name)
+        v = getattr(inst, a.name, NOTHING)
         if filter is not None and not filter(a, v):
             continue
 
@@ -273,7 +273,7 @@ def astuple(
     rv = []
     retain = retain_collection_types  # Very long. :/
     for a in attrs:
-        v = getattr(inst, a.name)
+        v = getattr(inst, a.name, NOTHING)
         if filter is not None and not filter(a, v):
             continue
         value_type = type(v)

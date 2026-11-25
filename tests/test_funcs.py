@@ -48,6 +48,22 @@ class TestAsDict:
     Tests for `asdict`.
     """
 
+    def test_uninitialized_attribute(self):
+        """
+        Uninitialized init=False attributes are serialized as NOTHING.
+        """
+        from attr import NOTHING
+
+        @attr.s
+        class WithUninitialized:
+            a = attr.ib()
+            b = attr.ib(init=False)
+
+        inst = WithUninitialized(1)
+
+        assert {"a": 1, "b": NOTHING} == asdict(inst)
+        assert (1, NOTHING) == astuple(inst)
+
     @given(st.sampled_from(MAPPING_TYPES))
     def test_shallow(self, C, dict_factory):
         """
